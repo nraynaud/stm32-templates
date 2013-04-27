@@ -1,14 +1,9 @@
-CC=arm-none-eabi-gcc
-AR=arm-none-eabi-ar
+include /Users/nraynaud/dev/STM32F4.platform/Developer/Share/Makefile
 
 ###########################################
 
 vpath %.c src src/peripherals
 
-CFLAGS  = -g -O2 -Wall
-CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
-CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
-CFLAGS += -ffreestanding -nostdlib
 CFLAGS += -Iinc -Iinc/core -Iinc/peripherals
 
 SRCS  = stm32f4_discovery.c stm32f4_discovery_audio_codec.c stm32f4_discovery_lis302dl.c stm32f4xx_it.c
@@ -34,6 +29,9 @@ all: libstm32f4.a
 
 libstm32f4.a: $(OBJS)
 	$(AR) -r $@ $(OBJS)
+
+install: libstm32f4.a
+	cp libstm32f4.a $(SDK)/usr/lib
 
 clean:
 	rm -f $(OBJS) libstm32f4.a

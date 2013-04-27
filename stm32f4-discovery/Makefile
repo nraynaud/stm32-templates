@@ -16,6 +16,7 @@ OBJCOPY=arm-none-eabi-objcopy
 CFLAGS  = -g -O2 -Wall -Tstm32_flash.ld 
 CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
 CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CFLAGS += -include stm32f4xx_conf.h
 
 ###################################################
 
@@ -46,7 +47,12 @@ $(PROJ_NAME).elf: $(SRCS)
 	$(OBJCOPY) -O ihex $(PROJ_NAME).elf $(PROJ_NAME).hex
 	$(OBJCOPY) -O binary $(PROJ_NAME).elf $(PROJ_NAME).bin
 
+install:
+	$(MAKE) -C lib install
+	$(MAKE) -C CMSIS install
 clean:
+	$(MAKE) -C lib clean
+	$(MAKE) -C CMSIS clean
 	rm -f *.o
 	rm -f $(PROJ_NAME).elf
 	rm -f $(PROJ_NAME).hex
