@@ -19,19 +19,19 @@ SRCS += misc.c system_stm32f4xx.c stm32f4xx_dma.c stm32f4xx_rcc.c stm32f4xx_adc.
 	stm32f4xx_dcmi.c stm32f4xx_pwr.c
 
 OBJS = $(SRCS:.c=.o)
+LIBNAME := libstm32f4.a
+.DEFAULT_GOAL := $(LIBNAME)
 
-.PHONY: libstm32f4.a
-
-all: libstm32f4.a
+all: $(LIBNAME)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $^
 
-libstm32f4.a: $(OBJS)
+$(LIBNAME): $(OBJS)
 	$(AR) -r $@ $(OBJS)
 
-install: libstm32f4.a
-	cp libstm32f4.a $(SDK)/usr/lib
+install: $(LIBNAME)
+	cp $(LIBNAME) $(SDK)/usr/lib
 
 clean:
-	rm -f $(OBJS) libstm32f4.a
+	rm -f $(OBJS) $(LIBNAME)

@@ -17,19 +17,20 @@ SRCS += $(wildcard $(SRCDIR)/TransformFunctions/*.c)
 
 
 OBJS = $(SRCS:.c=.o)
+PRJ := CMSIS_DSP
+LIBNAME := lib$(PRJ).a
+.DEFAULT_GOAL := $(LIBNAME)
 
-.PHONY: libCMSIS_DSP.a
-
-all: libCMSIS_DSP.a
+all: $(LIBNAME)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $^
 
-libCMSIS_DSP.a: $(OBJS)
+$(LIBNAME): $(OBJS)
 	$(AR) -r $@ $(OBJS)
 
-install: libCMSIS_DSP.a
-	cp libCMSIS_DSP.a $(SDK)/usr/lib
+install: $(LIBNAME)
+	cp $(LIBNAME) $(SDK)/usr/lib
 
 clean:
-	rm -f $(OBJS) libCMSIS_DSP.a 
+	rm -f $(OBJS) $(LIBNAME)

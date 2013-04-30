@@ -10,11 +10,14 @@ PROJ_NAME=main
 
 ###################################################
 
-CC=arm-none-eabi-gcc
-OBJCOPY=arm-none-eabi-objcopy
+CC=/Users/nraynaud/dev/STM32F4.platform/Developer/usr/bin/arm-none-eabi-gcc
+OBJCOPY=/Users/nraynaud/dev/STM32F4.platform/Developer/usr/bin/arm-none-eabi-objcopy
 
-CFLAGS  = -g -O2 -Wall -Tstm32_flash.ld 
-CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
+CFLAGS  = -g3 -Wall -Tstm32_flash.ld 
+CFLAGS += -DARM_MATH_CM4
+CFLAGS += -D__FPU_PRESENT=1
+CFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CFLAGS += -ffunction-sections
 CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CFLAGS += -include stm32f4xx_conf.h
 
@@ -33,12 +36,19 @@ OBJS = $(SRCS:.c=.o)
 
 ###################################################
 
-.PHONY: lib proj
+.PHONY: lib proj install clean CMSIS USB_OTG USB_Device
+.DEFAULT_GOAL := all
 
-all: lib proj
+all: lib CMSIS USB_OTG USB_Device proj
 
 lib:
 	$(MAKE) -C lib
+CMSIS:
+	$(MAKE) -C CMSIS
+USB_OTG:
+	$(MAKE) -C USB_OTG
+USB_Device:
+	$(MAKE) -C USB_Device
 
 proj: 	$(PROJ_NAME).elf
 
@@ -50,9 +60,13 @@ $(PROJ_NAME).elf: $(SRCS)
 install:
 	$(MAKE) -C lib install
 	$(MAKE) -C CMSIS install
+	$(MAKE) -C USB_OTG install
+	$(MAKE) -C USB_Device install
 clean:
 	$(MAKE) -C lib clean
 	$(MAKE) -C CMSIS clean
+	$(MAKE) -C USB_OTG clean
+	$(MAKE) -C USB_Device clean
 	rm -f *.o
 	rm -f $(PROJ_NAME).elf
 	rm -f $(PROJ_NAME).hex
