@@ -24,7 +24,7 @@ LIBNAME := lib$(PRJ).a
 all: $(LIBNAME)
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $^
 
 $(LIBNAME): $(OBJS)
 	$(AR) -r $@ $(OBJS)

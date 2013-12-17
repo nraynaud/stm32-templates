@@ -4,7 +4,7 @@ include /Users/nraynaud/dev/STM32F4.platform/Developer/Share/Makefile
 
 vpath %.c src src/peripherals
 
-CFLAGS += -Iinc -Iinc/core -Iinc/peripherals
+CPPFLAGS += -Iinc -Iinc/core -Iinc/peripherals
 
 SRCS  = stm32f4_discovery.c stm32f4_discovery_audio_codec.c stm32f4_discovery_lis302dl.c stm32f4xx_it.c
 SRCS += misc.c system_stm32f4xx.c stm32f4xx_dma.c stm32f4xx_rcc.c stm32f4xx_adc.c \
@@ -18,14 +18,14 @@ SRCS += misc.c system_stm32f4xx.c stm32f4xx_dma.c stm32f4xx_rcc.c stm32f4xx_adc.
 	stm32f4xx_dbgmcu.c stm32f4xx_iwdg.c \
 	stm32f4xx_dcmi.c stm32f4xx_pwr.c
 
-OBJS = $(SRCS:.c=.o)
+OBJS = $(SRCS:.c=.o) startup_stm32f4xx.o
 LIBNAME := libstm32f4.a
 .DEFAULT_GOAL := $(LIBNAME)
 
 all: $(LIBNAME)
 
-%.o : %.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+#%.o : %.c
+#	$(CC) $(CFLAGS) -c -o $@ $^
 
 $(LIBNAME): $(OBJS)
 	$(AR) -r $@ $(OBJS)

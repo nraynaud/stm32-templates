@@ -210,7 +210,7 @@ USBD_Status  USBD_StdItfReq (USB_OTG_CORE_HANDLE  *pdev, USB_SETUP_REQ  *req)
       
       if((req->wLength == 0)&& (ret == USBD_OK))
       {
-         USBD_CtlSendStatus(pdev);
+          USBD_CtlSendStatus(pdev);
       }
     } 
     else 
