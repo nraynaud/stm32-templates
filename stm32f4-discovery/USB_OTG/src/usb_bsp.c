@@ -242,9 +242,6 @@ void USB_OTG_BSP_Init(USB_OTG_CORE_HANDLE *pdev)
     /* enable the PWR clock */
     RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, ENABLE);
 
-    /* Configure the Key button in EXTI mode */
-    STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_EXTI);
-
 #ifdef USB_OTG_FS_LOW_PWR_MGMT_SUPPORT
   EXTI_ClearITPendingBit(EXTI_Line18);
 
@@ -285,7 +282,6 @@ void USB_OTG_BSP_Init(USB_OTG_CORE_HANDLE *pdev)
   EXTI_ClearITPendingBit(EXTI_Line20);
 #endif
 
-    EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
 }
 /**
 * @brief  USB_OTG_BSP_EnableInterrupt
